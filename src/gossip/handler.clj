@@ -12,7 +12,7 @@
             (cemerick.friend [workflows :as workflows]
                              [credentials :as creds])
             (gossip [db :refer :all]
-                    [diff :refer [diff edit-dist]]))
+                    [diff :refer [diff2]]))
   (:use [hiccup core page element form]))
 
 (defn entry [id req]
@@ -34,16 +34,10 @@
     (redirect-after-post (str "/entry/" new-id))))
 
 (defn diff-post [id content]
-  (let [d (diff content (get-entry id))]
+  (let [{:keys [edit-dist diff-html]} (diff2 (get-entry id) content)]
     (write-str
-    {:edit_dist (- 140 (edit-dist d))
-     :diff (html
-            (for [[type chunk] d]
-              [:span {:class (case type
-                               :ab 'common
-                               :a 'add
-                               :b 'del)}
-               (h chunk)]))})))
+     {:edit_dist (- 140 edit-dist)
+      :diff (html diff-html)})))
 
 (defn index [req]
   (html5

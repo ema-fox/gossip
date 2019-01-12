@@ -9,7 +9,8 @@
                  [ring/ring-defaults "0.3.2"]
                  ;[ring-basic-authentication "1.0.5"]
                  [com.cemerick/friend "0.2.3"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"]
+                 [diff-match-patch-clj "1.0.0-SNAPSHOT"]]
   :plugins [[lein-ring "0.12.4"]]
   :ring {:handler gossip.handler/app}
   :profiles
