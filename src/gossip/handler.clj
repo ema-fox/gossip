@@ -82,10 +82,10 @@
   (GET "/" [] index)
   (GET "/entry/:id" [id :as req] (entry (read-string id) req))
   (POST "/draft/:id" [id content] (entry-post (read-string id) content false))
-  (friend/wrap-authorize publisher-routes #{::publisher})
   (POST "/diff/:id" [id content] (diff-post (read-string id) content))
   (route/resources "/")
-  (route/not-found "Not Found"))
+  (route/not-found "Not Found")
+  (friend/wrap-authorize publisher-routes #{::publisher}))
 
 (def users (read-string (slurp "users.edn")))
 
