@@ -44,7 +44,7 @@
     (if (friend/authorized? #{::publisher} (friend/identity req))
       (link-to "/entry/nil" "new entry")
       "hoi!")
-    (for [[id content] (all-heads true)]
+    (for [[id content] (all-public-heads)]
       [:div
        (link-to (str "/entry/" id) id)
        " "
@@ -52,7 +52,7 @@
     (if (friend/authorized? #{::publisher} (friend/identity req))
       [:div
        [:h3 "drafts"]
-       (for [[id content] (all-heads false)]
+       (for [[id content] (all-draft-heads)]
          [:div
           (link-to (str "/entry/" id) id)
           " "

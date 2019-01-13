@@ -35,13 +35,28 @@
       :tempids
       (get "entry")))
 
-(defn all-heads [public]
-  (q (conj '[:find ?e ?content
-             :where
-             [?e ::content ?content]
-             (not [_ ::parent ?e])]
-           (cond->> '[?e ::public true]
-                    (not public) (list 'not)))
+(def shadow-rules
+  '[[(shadowed ?p)
+     [?c ::parent ?p]
+     (or [?c ::public true]
+         (shadowed ?c))]])
+
+(defn all-public-heads []
+  (q '[:find ?e ?content
+       :in $ %
+       :where
+       [?e ::content ?content]
+       [?e ::public true]
+       (not (shadowed ?e))]
+     (db conn)
+     shadow-rules))
+
+(defn all-draft-heads []
+  (q '[:find ?e ?content
+       :where
+       [?e ::content ?content]
+       (not [_ ::parent ?e])
+       (not [?e ::public true])]
      (db conn)))
 
 (defn all-entries []
