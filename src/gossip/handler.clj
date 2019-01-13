@@ -78,8 +78,8 @@
   (POST "/draft/:id" [id content] (entry-post (read-string id) content false))
   (POST "/diff/:id" [id content] (diff-post (read-string id) content))
   (route/resources "/")
-  (route/not-found "Not Found")
   (friend/wrap-authorize publisher-routes #{::publisher}))
+  (route/not-found "Not Found")
 
 (def users (read-string (slurp "users.edn")))
 
